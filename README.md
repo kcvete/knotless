@@ -20,8 +20,6 @@ All links are relative, so the site works under the `/knotless/` subpath.
 
 ## Placeholders
 
-- `[SUPPORT EMAIL]` in `index.html` (footer) and `privacy/index.html` (section 11).
-  Replace both; on the homepage, turn it into a `mailto:` link.
 - "Coming soon to Google Play" in `index.html`: swap for the Play link at launch
   (the URL is in an HTML comment next to it).
 
