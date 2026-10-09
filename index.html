@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knotless: Untie Your Mind</title>
+<meta name="description" content="Knotless is an Android app that puts a calm pause before the apps that pull you in. Breathe to untie the knots. No account. Nothing leaves your phone.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#E7ECDF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1A14" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://kcvete.github.io/knotless/">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta property="og:title" content="Knotless: Untie Your Mind">
+<meta property="og:description" content="A calm pause before the apps that pull you in. Breathe to untie the knots.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kcvete.github.io/knotless/">
+<meta property="og:image" content="https://kcvete.github.io/knotless/assets/feature-graphic.png">
+<style>
+  /* Bricolage Grotesque and Figtree (SIL OFL 1.1), self-hosted so the page
+     makes no third-party requests, matching the privacy policy. */
+  @font-face { font-family: "Bricolage Grotesque"; font-weight: 700; font-display: swap;
+    src: url(assets/fonts/bricolage-grotesque-700.woff2) format("woff2"); }
+  @font-face { font-family: "Figtree"; font-weight: 400 600; font-display: swap;
+    src: url(assets/fonts/figtree-400-600.woff2) format("woff2"); }
+
+  :root {
+    --ground: #E7ECDF; --surface: #F6F8F1; --chip: #DDE5D3; --ink: #1E3A2A;
+    --muted: #4A5B4B; --line: #C8D2BF; --leaf: #4F8A5B; --knot: #B5703A;
+    --knot2: #8E4A3A; --warm: #8A5A2E; --accent: #F3C46E; --spark: #D9A43F;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0F1A14; --surface: #18271E; --chip: #21342A; --ink: #E8EEE4;
+      --muted: #A3B3A5; --line: #2E4337; --leaf: #8CC59A; --knot: #E09A5F;
+      --knot2: #E09A5F; --warm: #E0A872; --spark: #F3C46E;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font: 400 17px/1.6 "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 960px; margin: 0 auto; padding: 40px 16px 48px; }
+  h1, h2, h3 { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 700;
+    letter-spacing: -0.02em; margin: 0; }
+  a { color: var(--ink); text-decoration-color: var(--leaf); text-underline-offset: 3px; }
+
+  .hero { display: grid; gap: 8px; justify-items: center; text-align: center; }
+  .hero svg { width: min(52vw, 200px); height: auto; order: -1; margin-bottom: 4px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--muted);
+    font-size: 15px; font-weight: 600; letter-spacing: 0.02em; }
+  .brand img { width: 28px; height: 28px; border-radius: 8px; }
+  h1 { font-size: clamp(44px, 12vw, 76px); line-height: 1; margin-top: 4px; }
+  .tagline { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 700;
+    color: var(--warm); font-size: clamp(20px, 5vw, 26px); line-height: 1.2; margin: 6px 0 0; }
+  .pitch { color: var(--muted); font-size: 18px; max-width: 30ch; margin: 10px auto 0;
+    text-wrap: balance; }
+  .soon { display: inline-flex; align-items: center; gap: 10px; margin-top: 18px;
+    min-height: 48px; padding: 0 22px; border-radius: 999px; background: var(--ink);
+    color: var(--surface); font-weight: 600; font-size: 16px; text-decoration: none; }
+  .soon .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex: none; }
+  @media (prefers-color-scheme: dark) {
+    .soon { background: var(--accent); color: #0F1A14; }
+    .soon .dot { background: #0F1A14; }
+  }
+
+  .how { margin-top: 48px; }
+  .how h2 { font-size: 26px; margin-bottom: 14px; }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .steps li { background: var(--surface); border-radius: 24px; padding: 20px;
+    display: grid; grid-template-columns: 48px 1fr; gap: 4px 16px; align-items: start; }
+  .steps .icon { grid-row: span 2; width: 48px; height: 48px; border-radius: 999px;
+    background: var(--chip); display: grid; place-items: center; }
+  .steps .icon svg { width: 30px; height: 30px; }
+  .steps h3 { font-size: 20px; line-height: 1.25; }
+  .steps p { margin: 0; color: var(--muted); }
+
+  .private { margin-top: 12px; background: var(--chip); border-radius: 24px; padding: 20px 22px;
+    border-left: 6px solid var(--leaf); }
+  .private p { margin: 0; }
+  .private strong { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 700;
+    font-size: 21px; display: block; line-height: 1.25; margin-bottom: 4px; }
+  .private span { color: var(--muted); }
+
+  footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; gap: 8px 24px; color: var(--muted); font-size: 15px; }
+  footer a { color: var(--ink); font-weight: 600; }
+  footer .who { flex-basis: 100%; }
+  .placeholder { font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+
+  @media (min-width: 760px) {
+    main { padding: 72px 32px 56px; }
+    .hero { grid-template-columns: 1fr auto; justify-items: start; text-align: left;
+      align-items: center; column-gap: 48px; }
+    .hero .text { grid-column: 1; grid-row: 1; }
+    .hero svg { grid-column: 2; grid-row: 1; width: 300px; order: 0; margin: 0; }
+    .pitch { margin-left: 0; }
+    .pitch { font-size: 20px; }
+    .steps { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .steps li { grid-template-columns: 1fr; padding: 24px; }
+    .steps .icon { grid-row: auto; margin-bottom: 12px; }
+    .how { margin-top: 64px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <div class="text">
+      <div class="brand"><img src="assets/icon-512.png" alt="" width="28" height="28">Android app by Lunaria Studios</div>
+      <h1>Knotless</h1>
+      <p class="tagline">Untie your mind.</p>
+      <p class="pitch">A calm pause before the apps that pull you in. Breathe to untie the knots.</p>
+      <!-- Swap for the Play Store link at launch:
+           https://play.google.com/store/apps/details?id=com.lunariastudios.knotless -->
+      <span class="soon"><span class="dot" aria-hidden="true"></span>Coming soon to Google Play</span>
+    </div>
+    <svg viewBox="0 0 200 220" role="img" aria-label="A side view of a head with one knot tied and one just untied, above a calm wave">
+      <path style="fill:var(--chip);stroke:var(--ink)" d="M72 214 C70 198 64 184 56 170 C46 154 30 130 30 104 C30 58 64 24 108 24 C148 24 170 48 173 82 C174 94 176 102 175 108 C180 116 189 122 191 127 C193 132 189 136 183 136 C181 138 182 141 184 144 C186 148 185 152 182 154 C180 156 179 158 179 161 C179 166 183 170 182 175 C181 180 175 182 167 182 C159 182 151 183 147 188 C143 193 144 203 148 214"
+        stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path style="stroke:var(--leaf)" d="M56 98 C72 84 88 112 104 98 S136 84 152 98" fill="none" stroke-width="3" stroke-linecap="round"/>
+      <path style="stroke:var(--knot)" d="M-14 2 C-10 -12 6 -14 10 -4 C14 6 0 14 -6 6 C-12 -2 -2 -12 8 -8 C16 -4 12 10 2 12 C-6 14 -14 8 -10 0"
+        transform="translate(86 64)" fill="none" stroke-width="3" stroke-linecap="round"/>
+      <g transform="translate(133 60) scale(0.72)" style="stroke:var(--spark)" fill="none" stroke-linecap="round">
+        <path d="M-31 11 C-19 1 -3 19 11 9 S25 1 31 5" stroke-width="3.6"/>
+        <path d="M-27 -5 l-4 -6 M-5 -11 v-8 M17 -7 l4 -6" stroke-width="3"/>
+      </g>
+    </svg>
+  </section>
+
+  <section class="how" aria-labelledby="how-title">
+    <h2 id="how-title">How it works</h2>
+    <ol class="steps">
+      <li>
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 30 30"><path style="stroke:var(--ink)" d="M11 9 v12 M19 9 v12" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+        <h3>A pause before you open</h3>
+        <p>Pick the apps that pull you in. Opening one shows a short pause first: why now, and for how long. Then it is your call.</p>
+      </li>
+      <li>
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 30 30"><path style="stroke:var(--knot)" d="M-14 2 C-10 -12 6 -14 10 -4 C14 6 0 14 -6 6 C-12 -2 -2 -12 8 -8 C16 -4 12 10 2 12 C-6 14 -14 8 -10 0" transform="translate(15 15) scale(0.72)" stroke-width="3.6" stroke-linecap="round" fill="none"/></svg></span>
+        <h3>Going in ties a knot</h3>
+        <p>"Not now" keeps your mind clear. Open the app anyway and a small knot ties in your head. You are never locked out.</p>
+      </li>
+      <li>
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 30 30"><path style="stroke:var(--leaf)" d="M4 15 C9 10 12 20 15 15 S21 10 26 15" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+        <h3>Breathe, or put it down</h3>
+        <p>A minute of slow breathing unties a knot. Phone-free time fades the newest one. Every morning starts clear.</p>
+      </li>
+    </ol>
+
+    <div class="private">
+      <p><strong>No account. Nothing leaves your phone.</strong>
+      <span>No ads, no analytics, no tracking. Knotless has no internet permission.</span></p>
+    </div>
+  </section>
+
+  <footer>
+    <a href="privacy/">Privacy policy</a>
+    <!-- Contact email placeholder: replace [SUPPORT EMAIL] here and in
+         privacy/index.html, then make this a mailto: link. -->
+    <span>Contact: <span class="placeholder">[SUPPORT EMAIL]</span></span>
+    <span class="who">Lunaria Studios. This page loads no scripts, trackers or cookies.</span>
+  </footer>
+</main>
+</body>
+</html>
