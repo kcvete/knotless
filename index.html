@@ -4,163 +4,506 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Knotless: Untie Your Mind</title>
-<meta name="description" content="Knotless is an Android app that puts a calm pause before the apps that pull you in. Breathe to untie the knots. No account. Nothing leaves your phone.">
+<meta name="description" content="Knotless is an Android app that puts a calm pause before the apps that pull you in. Open one anyway and a knot ties in your head; breathe for a minute to untie it. No account. Nothing leaves your phone.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#E7ECDF" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0F1A14" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="https://kcvete.github.io/knotless/">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/bricolage-grotesque-700.woff2" as="font" type="font/woff2" crossorigin>
 <meta property="og:title" content="Knotless: Untie Your Mind">
 <meta property="og:description" content="A calm pause before the apps that pull you in. Breathe to untie the knots.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://kcvete.github.io/knotless/">
 <meta property="og:image" content="https://kcvete.github.io/knotless/assets/feature-graphic.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="500">
+<meta property="og:image:alt" content="Knotless: a calm pause before the apps that pull you in. Untie the knots.">
+<meta name="twitter:card" content="summary_large_image">
 <style>
   /* Bricolage Grotesque and Figtree (SIL OFL 1.1), self-hosted so the page
-     makes no third-party requests, matching the privacy policy. */
+     makes no third-party requests. */
   @font-face { font-family: "Bricolage Grotesque"; font-weight: 700; font-display: swap;
     src: url(assets/fonts/bricolage-grotesque-700.woff2) format("woff2"); }
   @font-face { font-family: "Figtree"; font-weight: 400 600; font-display: swap;
     src: url(assets/fonts/figtree-400-600.woff2) format("woff2"); }
 
+  /* Tokens from the app's Clear Mind spec. */
   :root {
     --ground: #E7ECDF; --surface: #F6F8F1; --chip: #DDE5D3; --ink: #1E3A2A;
     --muted: #4A5B4B; --line: #C8D2BF; --leaf: #4F8A5B; --knot: #B5703A;
-    --knot2: #8E4A3A; --warm: #8A5A2E; --accent: #F3C46E; --spark: #D9A43F;
+    --warm: #8A5A2E; --accent: #F3C46E; --spark: #D9A43F;
+    --forest: #1E3A2A; --on-forest: #F6F8F1; --on-forest-muted: #B9C8BB;
+    --frame: #1E3A2A; --frame-edge: #1E3A2A;
+    --shadow: 0 30px 60px -30px rgba(30, 58, 42, .55);
+    --btn-bg: #1E3A2A; --btn-ink: #F6F8F1; --btn-dot: #F3C46E;
   }
   @media (prefers-color-scheme: dark) {
     :root {
       --ground: #0F1A14; --surface: #18271E; --chip: #21342A; --ink: #E8EEE4;
       --muted: #A3B3A5; --line: #2E4337; --leaf: #8CC59A; --knot: #E09A5F;
-      --knot2: #E09A5F; --warm: #E0A872; --spark: #F3C46E;
+      --warm: #E0A872; --spark: #F3C46E;
+      --forest: #18271E; --on-forest: #E8EEE4; --on-forest-muted: #A3B3A5;
+      --frame: #22352A; --frame-edge: #3A5244;
+      --shadow: 0 30px 60px -30px rgba(0, 0, 0, .8);
+      --btn-bg: #F3C46E; --btn-ink: #0F1A14; --btn-dot: #0F1A14;
     }
   }
+
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
   body {
     margin: 0; background: var(--ground); color: var(--ink);
     font: 400 17px/1.6 "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    overflow-x: hidden;
   }
-  main { max-width: 960px; margin: 0 auto; padding: 40px 16px 48px; }
   h1, h2, h3 { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 700;
-    letter-spacing: -0.02em; margin: 0; }
-  a { color: var(--ink); text-decoration-color: var(--leaf); text-underline-offset: 3px; }
+    letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+  p { margin: 0; }
+  a { color: inherit; text-decoration-color: var(--leaf); text-decoration-thickness: 2px;
+    text-underline-offset: 3px; }
+  a:hover { text-decoration-color: currentColor; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+  img { max-width: 100%; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; }
 
-  .hero { display: grid; gap: 8px; justify-items: center; text-align: center; }
-  .hero svg { width: min(52vw, 200px); height: auto; order: -1; margin-bottom: 4px; }
-  .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--muted);
-    font-size: 15px; font-weight: 600; letter-spacing: 0.02em; }
-  .brand img { width: 28px; height: 28px; border-radius: 8px; }
-  h1 { font-size: clamp(44px, 12vw, 76px); line-height: 1; margin-top: 4px; }
-  .tagline { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 700;
-    color: var(--warm); font-size: clamp(20px, 5vw, 26px); line-height: 1.2; margin: 6px 0 0; }
-  .pitch { color: var(--muted); font-size: 18px; max-width: 30ch; margin: 10px auto 0;
-    text-wrap: balance; }
-  .soon { display: inline-flex; align-items: center; gap: 10px; margin-top: 18px;
-    min-height: 48px; padding: 0 22px; border-radius: 999px; background: var(--ink);
-    color: var(--surface); font-weight: 600; font-size: 16px; text-decoration: none; }
-  .soon .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex: none; }
-  @media (prefers-color-scheme: dark) {
-    .soon { background: var(--accent); color: #0F1A14; }
-    .soon .dot { background: #0F1A14; }
+  /* Phone frame around a real 1080x2400 capture. */
+  .phone { position: relative; width: var(--pw, 260px); margin: 0; flex: none;
+    padding: 7px; border-radius: 30px; background: var(--frame);
+    box-shadow: 0 0 0 1px var(--frame-edge), var(--shadow); }
+  .phone img { display: block; width: 100%; height: auto; aspect-ratio: 600 / 1334;
+    border-radius: 23px; background: var(--chip); }
+  .phone::after { content: ""; position: absolute; top: 16px; left: 50%; width: 9px; height: 9px;
+    margin-left: -4.5px; border-radius: 50%; background: #0B140F; }
+
+  /* Store button: a plain span until launch, then an <a> with the same class. */
+  .store { display: inline-flex; align-items: center; gap: 12px; min-height: 58px;
+    padding: 9px 24px 9px 18px; border-radius: 20px; background: var(--btn-bg);
+    color: var(--btn-ink); text-decoration: none; line-height: 1.15; }
+  .store svg { width: 26px; height: 26px; flex: none; }
+  .store small { display: block; font-size: 13px; font-weight: 500; opacity: .8; }
+  .store b { display: block; font-family: "Bricolage Grotesque", system-ui, sans-serif;
+    font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  .store-note { color: var(--muted); font-size: 15px; margin-top: 12px; }
+
+  /* Top bar */
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding-top: 18px; font-size: 15px; color: var(--muted); }
+  .top .by { display: inline-flex; align-items: center; gap: 10px; }
+  .top img { width: 32px; height: 32px; border-radius: 9px; }
+  .top a { font-weight: 600; color: var(--ink); }
+  @media (max-width: 380px) { .top .long { display: none; } }
+
+  /* Hero */
+  .hero { display: grid; gap: 40px; justify-items: center; text-align: center;
+    padding: 32px 0 0; }
+  .wordmark { font-size: clamp(72px, 23vw, 168px); line-height: .9; letter-spacing: -0.045em;
+    display: inline-flex; align-items: baseline; }
+  .wordmark .o { width: .58em; height: .58em; margin: 0 .005em 0 .015em; overflow: visible;
+    align-self: baseline; transform: translateY(.035em); }
+  /* Without motion the o is simply clean; the knot only shows while it unwinds. */
+  .o .tangle { stroke: var(--knot); stroke-width: 3.2; fill: none; stroke-linecap: round;
+    stroke-dasharray: 1 1; opacity: 0; }
+  .o .ring { stroke: var(--ink); stroke-width: 8.4; fill: none; }
+  .o .sparks { stroke: var(--spark); stroke-width: 3; fill: none; stroke-linecap: round; }
+  @media (prefers-reduced-motion: no-preference) {
+    .o .tangle { animation: unwind 1.6s cubic-bezier(.55, 0, .35, 1) .9s backwards; }
+    .o .ring { animation: draw 1.3s cubic-bezier(.3, 0, .2, 1) 1.5s backwards; }
+    .o .sparks { animation: pop .7s ease-out 2.5s backwards; }
   }
+  @keyframes unwind {
+    0% { stroke-dashoffset: 0; opacity: 1; }
+    70% { opacity: 1; }
+    100% { stroke-dashoffset: -1; opacity: 0; }
+  }
+  @keyframes draw {
+    0% { stroke-dasharray: 1 1; stroke-dashoffset: 1; opacity: 0; }
+    2% { opacity: 1; }
+    100% { stroke-dasharray: 1 1; stroke-dashoffset: 0; opacity: 1; }
+  }
+  @keyframes pop { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
-  .how { margin-top: 48px; }
-  .how h2 { font-size: 26px; margin-bottom: 14px; }
-  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-  .steps li { background: var(--surface); border-radius: 24px; padding: 20px;
-    display: grid; grid-template-columns: 48px 1fr; gap: 4px 16px; align-items: start; }
-  .steps .icon { grid-row: span 2; width: 48px; height: 48px; border-radius: 999px;
-    background: var(--chip); display: grid; place-items: center; }
-  .steps .icon svg { width: 30px; height: 30px; }
-  .steps h3 { font-size: 20px; line-height: 1.25; }
-  .steps p { margin: 0; color: var(--muted); }
+  .tagline { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 700;
+    font-size: clamp(24px, 6.4vw, 34px); line-height: 1.15; letter-spacing: -0.02em;
+    margin-top: 18px; max-width: 18ch; margin-inline: auto; }
+  .lead { color: var(--muted); font-size: 18px; max-width: 36ch; margin: 14px auto 0;
+    text-wrap: pretty; }
+  .hero .store { margin-top: 28px; }
+  /* On phones, show the top of the hero screen and let the rest fade out. */
+  .hero .phone { --pw: min(72vw, 280px); max-height: 470px; overflow: hidden;
+    padding-bottom: 0; border-radius: 30px 30px 0 0;
+    -webkit-mask-image: linear-gradient(#000 70%, transparent);
+    mask-image: linear-gradient(#000 70%, transparent); }
+  .hero .phone img { border-radius: 23px 23px 0 0; }
 
-  .private { margin-top: 12px; background: var(--chip); border-radius: 24px; padding: 20px 22px;
-    border-left: 6px solid var(--leaf); }
-  .private p { margin: 0; }
-  .private strong { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 700;
-    font-size: 21px; display: block; line-height: 1.25; margin-bottom: 4px; }
-  .private span { color: var(--muted); }
+  /* Sections */
+  section { padding: 72px 0; }
+  .sec-title { font-size: clamp(32px, 8.4vw, 52px); line-height: 1.05; max-width: 16ch; }
+  .sec-intro { color: var(--muted); font-size: 18px; max-width: 46ch; margin-top: 14px; }
 
-  footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
-    display: flex; flex-wrap: wrap; gap: 8px 24px; color: var(--muted); font-size: 15px; }
+  /* The loop: a thread runs down the steps; each marker shows the mind's state. */
+  .loop ol { list-style: none; margin: 48px 0 0; padding: 0; position: relative; }
+  .loop ol::before { content: ""; position: absolute; left: 21px; top: 22px; bottom: 60px;
+    width: 2px; background: var(--line); }
+  .step { position: relative; display: grid; grid-template-columns: 44px 1fr; gap: 0 18px;
+    padding-bottom: 64px; }
+  .step:last-child { padding-bottom: 0; }
+  .mark { width: 44px; height: 44px; border-radius: 50%; background: var(--chip);
+    display: grid; place-items: center; position: relative; z-index: 1;
+    box-shadow: 0 0 0 6px var(--ground); }
+  .mark svg { width: 28px; height: 28px; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .step-text { padding-top: 4px; }
+  .step h3 { font-size: 24px; line-height: 1.2; }
+  .step p { color: var(--muted); margin-top: 8px; max-width: 42ch; }
+  .step p strong { color: var(--ink); font-weight: 600; }
+  .shots { grid-column: 2; display: flex; gap: 14px; margin-top: 24px; align-items: flex-start; }
+  .shots .phone { --pw: min(56vw, 220px); }
+  .shots.pair .phone { --pw: min(calc((100vw - 110px) / 2), 210px); padding: 5px;
+    border-radius: 22px; }
+  .shots.pair .phone img { border-radius: 17px; }
+  .shots.pair .phone::after { top: 12px; width: 7px; height: 7px; margin-left: -3.5px; }
+  .shots.pair .phone + .phone { margin-top: 40px; }
+
+  /* Different */
+  .diff { background: var(--surface); }
+  .diff ul { list-style: none; margin: 40px 0 0; padding: 0; display: grid; gap: 28px; }
+  .diff li { display: grid; grid-template-columns: 40px 1fr; gap: 2px 16px; }
+  .diff li svg { grid-row: span 2; width: 40px; height: 40px; fill: none; stroke-linecap: round;
+    stroke-linejoin: round; }
+  .diff h3 { font-size: 21px; line-height: 1.25; }
+  .diff li p { color: var(--muted); max-width: 40ch; }
+
+  /* Patterns */
+  .patterns .inner { display: grid; gap: 40px; justify-items: start; }
+  .reasons { list-style: none; padding: 0; margin: 24px 0 0; display: flex; flex-wrap: wrap;
+    gap: 8px; max-width: 30rem; }
+  .reasons li { background: var(--chip); border-radius: 999px; padding: 8px 16px;
+    font-size: 15px; font-weight: 500; }
+  .reasons li:first-child { background: var(--ink); color: var(--ground); }
+  .patterns .phone { --pw: min(60vw, 240px); justify-self: center; }
+
+  /* Privacy: a forest band, like the app's breathing screen. */
+  .private { background: var(--forest); color: var(--on-forest); }
+  .private .sec-title { max-width: 14ch; }
+  .private .sec-intro { color: var(--on-forest-muted); }
+  .private a { text-decoration-color: var(--accent); font-weight: 600; }
+  .perms { margin: 40px 0 28px; padding: 0; max-width: 44rem;
+    border-top: 1px solid rgba(232, 238, 228, .16); }
+  .perms div { display: grid; gap: 2px 24px; padding: 16px 0;
+    border-bottom: 1px solid rgba(232, 238, 228, .16); }
+  .perms dt { font-weight: 600; }
+  .perms dd { margin: 0; color: var(--on-forest-muted); }
+  .perms .none dd { color: var(--accent); font-weight: 600; }
+
+  /* FAQ */
+  .faq .inner { display: grid; gap: 40px; }
+  .faq dl, .faq .list { margin: 32px 0 0; }
+  details { border-top: 1px solid var(--line); }
+  details:last-child { border-bottom: 1px solid var(--line); }
+  summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between;
+    align-items: center; gap: 16px; padding: 18px 0; font-weight: 600; font-size: 18px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: ""; flex: none; width: 10px; height: 10px; margin-right: 6px;
+    border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+    transform: rotate(45deg) translateY(-3px); transition: transform .2s; }
+  details[open] summary::after { transform: rotate(-135deg) translateX(-3px); }
+  details p { color: var(--muted); padding: 0 0 20px; max-width: 58ch; }
+  .setup { display: flex; gap: 20px; align-items: center; }
+  .setup .phone { --pw: 150px; padding: 5px; border-radius: 20px; }
+  .setup .phone img { border-radius: 15px; }
+  .setup .phone::after { top: 10px; width: 6px; height: 6px; margin-left: -3px; }
+  .setup p { color: var(--muted); max-width: 26ch; }
+  .setup p strong { display: block; color: var(--ink); font-family: "Bricolage Grotesque",
+    system-ui, sans-serif; font-size: 22px; line-height: 1.2; margin-bottom: 6px; }
+
+  /* Final call */
+  .final { text-align: center; padding-top: 16px; padding-bottom: 88px; }
+  .final .head { width: 150px; height: auto; margin: 0 auto 24px; display: block; }
+  .final .sec-title { margin: 0 auto; }
+  .final .sec-intro { margin: 14px auto 0; max-width: 36ch; text-wrap: balance; }
+  .final .store { margin-top: 28px; }
+
+  footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted);
+    font-size: 15px; }
+  footer .wrap { display: grid; gap: 10px; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
   footer a { color: var(--ink); font-weight: 600; }
-  footer .who { flex-basis: 100%; }
   .email { overflow-wrap: anywhere; }
 
-  @media (min-width: 760px) {
-    main { padding: 72px 32px 56px; }
-    .hero { grid-template-columns: 1fr auto; justify-items: start; text-align: left;
-      align-items: center; column-gap: 48px; }
-    .hero .text { grid-column: 1; grid-row: 1; }
-    .hero svg { grid-column: 2; grid-row: 1; width: 300px; order: 0; margin: 0; }
-    .pitch { margin-left: 0; }
-    .pitch { font-size: 20px; }
-    .steps { grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .steps li { grid-template-columns: 1fr; padding: 24px; }
-    .steps .icon { grid-row: auto; margin-bottom: 12px; }
-    .how { margin-top: 64px; }
+  @media (min-width: 900px) {
+    body { font-size: 18px; }
+    .wrap { padding: 0 40px; }
+    section { padding: 120px 0; }
+    .hero { grid-template-columns: 1fr auto; text-align: left; justify-items: start;
+      align-items: center; gap: 64px; padding: 64px 0 56px; }
+    .tagline, .lead { margin-inline: 0; }
+    .hero .phone { --pw: 320px; margin-right: 24px; max-height: none; overflow: visible;
+      padding-bottom: 7px; border-radius: 30px; -webkit-mask-image: none; mask-image: none; }
+    .hero .phone img { border-radius: 23px; }
+    .lead { font-size: 20px; }
+
+    .loop ol { margin-top: 72px; }
+    .loop ol::before { left: 27px; top: 28px; }
+    .step { grid-template-columns: 56px minmax(0, 1fr) minmax(0, 1fr); gap: 0 40px;
+      padding-bottom: 88px; align-items: start; }
+    .mark { width: 56px; height: 56px; box-shadow: 0 0 0 8px var(--ground); }
+    .mark svg { width: 34px; height: 34px; }
+    .step-text { padding-top: 10px; position: sticky; top: 120px; }
+    .step h3 { font-size: 32px; }
+    .step p { font-size: 19px; }
+    .shots { grid-column: 3; margin-top: 0; justify-content: center; }
+    .shots .phone { --pw: 270px; }
+    .shots.pair .phone { --pw: 230px; padding: 6px; border-radius: 26px; }
+    .shots.pair .phone img { border-radius: 20px; }
+    .shots.pair .phone + .phone { margin-top: 56px; }
+
+    .diff ul { grid-template-columns: 1fr 1fr; gap: 48px 64px; margin-top: 56px; }
+    .diff h3 { font-size: 24px; }
+    .diff li { grid-template-columns: 48px 1fr; gap: 4px 20px; }
+    .diff li svg { width: 48px; height: 48px; }
+
+    .patterns .inner { grid-template-columns: 1fr auto; align-items: center; gap: 80px; }
+    .patterns .phone { --pw: 300px; margin-right: 24px; }
+
+    .private .wrap { display: grid; grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto 1fr; gap: 0 80px; align-items: start; }
+    .private .perms { grid-column: 2; grid-row: 1 / span 3; margin: 8px 0 0; }
+    .private .wrap > p:last-child { margin-top: 28px; }
+    .perms div { grid-template-columns: 150px 1fr; }
+    .final { padding-top: 24px; }
+
+    .faq .inner { grid-template-columns: 1fr 300px; gap: 80px; align-items: start; }
+    .setup { flex-direction: column; align-items: flex-start; margin-top: 8px;
+      position: sticky; top: 40px; }
+    .setup .phone { --pw: 220px; padding: 6px; border-radius: 25px; }
+    .setup .phone img { border-radius: 19px; }
+
+    .final .head { width: 190px; }
   }
 </style>
 </head>
 <body>
+<header class="wrap top">
+  <span class="by"><img src="assets/apple-touch-icon.png" alt="" width="32" height="32"><span><span class="long">An Android app </span>by <a href="https://kcvete.github.io/lunaria-landing/">Lunaria Studios</a></span></span>
+  <a href="privacy/">Privacy</a>
+</header>
+
 <main>
-  <section class="hero">
-    <div class="text">
-      <div class="brand"><img src="assets/icon-512.png" alt="" width="28" height="28">Android app by Lunaria Studios</div>
-      <h1>Knotless</h1>
-      <p class="tagline">Untie your mind.</p>
-      <p class="pitch">A calm pause before the apps that pull you in. Breathe to untie the knots.</p>
-      <!-- Swap for the Play Store link at launch:
-           https://play.google.com/store/apps/details?id=com.lunariastudios.knotless -->
-      <span class="soon"><span class="dot" aria-hidden="true"></span>Coming soon to Google Play</span>
+  <div class="wrap hero">
+    <div>
+      <h1 class="wordmark" aria-label="Knotless"><span aria-hidden="true">Kn</span><svg class="o" viewBox="-20 -20 40 40" aria-hidden="true">
+          <path class="tangle" pathLength="1" d="M-14 2 C-10 -12 6 -14 10 -4 C14 6 0 14 -6 6 C-12 -2 -2 -12 8 -8 C16 -4 12 10 2 12 C-6 14 -14 8 -10 0"/>
+          <circle class="ring" pathLength="1" r="12.6" transform="rotate(-90)"/>
+          <path class="sparks" d="M-13 -21 l-3 -5 M0 -24 v-6 M13 -21 l3 -5"/>
+        </svg><span aria-hidden="true">tless</span></h1>
+      <p class="tagline">A calm pause before the apps that pull you in.</p>
+      <p class="lead">Open one anyway and a small knot ties in your head. Breathe for a minute, or put the phone down, and it comes undone.</p>
+      <!-- At launch, turn this span into a link with the same class:
+           <a class="store" href="https://play.google.com/store/apps/details?id=com.lunariastudios.knotless"> -->
+      <span class="store">
+        <svg viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11" fill="none" stroke="var(--btn-dot)" stroke-width="2.4"/><path d="M8 14 c2 -3 4 3 5 0 s3 -3 5 0" fill="none" stroke="var(--btn-dot)" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <span><small>Coming soon to</small><b>Google Play</b></span>
+      </span>
+      <p class="store-note">Free, for Android. No account, no ads.</p>
     </div>
-    <svg viewBox="0 0 200 220" role="img" aria-label="A side view of a head with one knot tied and one just untied, above a calm wave">
-      <path style="fill:var(--chip);stroke:var(--ink)" d="M72 214 C70 198 64 184 56 170 C46 154 30 130 30 104 C30 58 64 24 108 24 C148 24 170 48 173 82 C174 94 176 102 175 108 C180 116 189 122 191 127 C193 132 189 136 183 136 C181 138 182 141 184 144 C186 148 185 152 182 154 C180 156 179 158 179 161 C179 166 183 170 182 175 C181 180 175 182 167 182 C159 182 151 183 147 188 C143 193 144 203 148 214"
-        stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-      <path style="stroke:var(--leaf)" d="M56 98 C72 84 88 112 104 98 S136 84 152 98" fill="none" stroke-width="3" stroke-linecap="round"/>
-      <path style="stroke:var(--knot)" d="M-14 2 C-10 -12 6 -14 10 -4 C14 6 0 14 -6 6 C-12 -2 -2 -12 8 -8 C16 -4 12 10 2 12 C-6 14 -14 8 -10 0"
-        transform="translate(86 64)" fill="none" stroke-width="3" stroke-linecap="round"/>
-      <g transform="translate(133 60) scale(0.72)" style="stroke:var(--spark)" fill="none" stroke-linecap="round">
-        <path d="M-31 11 C-19 1 -3 19 11 9 S25 1 31 5" stroke-width="3.6"/>
-        <path d="M-27 -5 l-4 -6 M-5 -11 v-8 M17 -7 l4 -6" stroke-width="3"/>
-      </g>
-    </svg>
+    <figure class="phone">
+      <img src="assets/screens/mind.webp" width="600" height="1334" fetchpriority="high"
+        alt="The Mind screen: a side-view head with two knots in it, a meter showing one knot fading after phone-free time, a Breathe 1 min button, and a week strip with two clear days.">
+    </figure>
+  </div>
+
+  <section class="loop" aria-labelledby="loop-title">
+    <div class="wrap">
+      <h2 class="sec-title" id="loop-title">How a knot ties, and how it comes undone</h2>
+      <ol>
+        <li class="step">
+          <span class="mark" aria-hidden="true"><svg viewBox="0 0 34 34"><rect x="8" y="8" width="18" height="18" rx="5" stroke="var(--ink)" stroke-width="2.6"/><circle cx="17" cy="17" r="2.6" fill="var(--ink)" stroke="none"/></svg></span>
+          <div class="step-text">
+            <h3>You reach for an app</h3>
+            <p>Out of habit, your thumb finds one of the apps that pull you in. You picked them yourself in Knotless, and only those get a pause.</p>
+          </div>
+          <div class="shots">
+            <figure class="phone"><img src="assets/screens/apps.webp" width="600" height="1334" loading="lazy" decoding="async"
+              alt="The app list, titled Which apps tie knots, with four apps switched on under Guarding and others under Most used today."></figure>
+          </div>
+        </li>
+        <li class="step">
+          <span class="mark" aria-hidden="true"><svg viewBox="0 0 34 34"><path d="M13 10 v14 M21 10 v14" stroke="var(--ink)" stroke-width="3"/></svg></span>
+          <div class="step-text">
+            <h3>A calm pause asks why</h3>
+            <p>Before the app opens: what is pulling you in, and how long do you want to stay? Note your inner weather if you like. Then it is your call. <strong>Not now</strong> keeps your mind clear.</p>
+          </div>
+          <div class="shots">
+            <figure class="phone"><img src="assets/screens/pause.webp" width="600" height="1334" loading="lazy" decoding="async"
+              alt="The pause screen: Clock again? 2nd time today. Reasons to pick from, a choice of how long to stay, inner weather icons, and a Not now, keep it clear button."></figure>
+          </div>
+        </li>
+        <li class="step">
+          <span class="mark" aria-hidden="true"><svg viewBox="0 0 34 34"><path transform="translate(17 17) scale(.82)" d="M-14 2 C-10 -12 6 -14 10 -4 C14 6 0 14 -6 6 C-12 -2 -2 -12 8 -8 C16 -4 12 10 2 12 C-6 14 -14 8 -10 0" stroke="var(--knot)" stroke-width="3"/></svg></span>
+          <div class="step-text">
+            <h3>Go in anyway, and a knot ties</h3>
+            <p>Open the app and a small knot ties in your head. When your time is up, a quiet screen asks if you are done. Five more minutes ties another, right in the dashed spot.</p>
+          </div>
+          <div class="shots">
+            <figure class="phone"><img src="assets/screens/timesup.webp" width="600" height="1334" loading="lazy" decoding="async"
+              alt="The time's up screen: Your 5 minutes are up. The head shows two knots and a dashed circle where the next one would tie, with I'm done and 5 more min buttons."></figure>
+          </div>
+        </li>
+        <li class="step">
+          <span class="mark" aria-hidden="true"><svg viewBox="0 0 34 34"><g transform="translate(17 20) scale(.44)"><path d="M-31 11 C-19 1 -3 19 11 9 S25 1 31 5" stroke="var(--spark)" stroke-width="6"/><path d="M-27 -5 l-4 -6 M-5 -11 v-8 M17 -7 l4 -6" stroke="var(--spark)" stroke-width="5.4"/></g></svg></span>
+          <div class="step-text">
+            <h3>Breathe to untie it</h3>
+            <p>Six slow breaths, four seconds in and six out, untie one knot. Or put the phone down: an hour of phone-free time fades the newest knot on its own.</p>
+          </div>
+          <div class="shots pair">
+            <figure class="phone"><img src="assets/screens/breathe.webp" width="600" height="1334" loading="lazy" decoding="async"
+              alt="The breathing screen: Breathe in, 4 seconds in and 6 seconds out, with a progress ring around the head as a knot loosens."></figure>
+            <figure class="phone"><img src="assets/screens/untied.webp" width="600" height="1334" loading="lazy" decoding="async"
+              alt="One less knot. A minute of breathing did that. The last one is already fading."></figure>
+          </div>
+        </li>
+        <li class="step">
+          <span class="mark" aria-hidden="true"><svg viewBox="0 0 34 34"><path d="M5 18 C10 12 13 23 17 17 S24 12 29 17" stroke="var(--leaf)" stroke-width="3"/></svg></span>
+          <div class="step-text">
+            <h3>Your week fills with clear days</h3>
+            <p>A day that ends with no knots is a clear day, and the week strip shows each one. Every morning starts fresh, so there is nothing to make up for.</p>
+          </div>
+          <div class="shots">
+            <figure class="phone"><img src="assets/screens/mind-dark.webp" width="600" height="1334" loading="lazy" decoding="async"
+              alt="The Mind screen in dark mode: Clear mind, an empty head with a calm wave, and a week strip with three clear days."></figure>
+          </div>
+        </li>
+      </ol>
+    </div>
   </section>
 
-  <section class="how" aria-labelledby="how-title">
-    <h2 id="how-title">How it works</h2>
-    <ol class="steps">
-      <li>
-        <span class="icon" aria-hidden="true"><svg viewBox="0 0 30 30"><path style="stroke:var(--ink)" d="M11 9 v12 M19 9 v12" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
-        <h3>A pause before you open</h3>
-        <p>Pick the apps that pull you in. Opening one shows a short pause first: why now, and for how long. Then it is your call.</p>
-      </li>
-      <li>
-        <span class="icon" aria-hidden="true"><svg viewBox="0 0 30 30"><path style="stroke:var(--knot)" d="M-14 2 C-10 -12 6 -14 10 -4 C14 6 0 14 -6 6 C-12 -2 -2 -12 8 -8 C16 -4 12 10 2 12 C-6 14 -14 8 -10 0" transform="translate(15 15) scale(0.72)" stroke-width="3.6" stroke-linecap="round" fill="none"/></svg></span>
-        <h3>Going in ties a knot</h3>
-        <p>"Not now" keeps your mind clear. Open the app anyway and a small knot ties in your head. You are never locked out.</p>
-      </li>
-      <li>
-        <span class="icon" aria-hidden="true"><svg viewBox="0 0 30 30"><path style="stroke:var(--leaf)" d="M4 15 C9 10 12 20 15 15 S21 10 26 15" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
-        <h3>Breathe, or put it down</h3>
-        <p>A minute of slow breathing unties a knot. Phone-free time fades the newest one. Every morning starts clear.</p>
-      </li>
-    </ol>
-
-    <div class="private">
-      <p><strong>No account. Nothing leaves your phone.</strong>
-      <span>No ads, no analytics, no tracking. Knotless has no internet permission.</span></p>
+  <section class="diff" aria-labelledby="diff-title">
+    <div class="wrap">
+      <h2 class="sec-title" id="diff-title">A pause, not a block</h2>
+      <p class="sec-intro">Knotless never locks you out. It slows the moment down long enough for you to choose, then shows you how your day is going.</p>
+      <ul>
+        <li>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="var(--chip)"/><path d="M19 16 v16 M29 16 v16" stroke="var(--ink)" stroke-width="3"/></svg>
+          <h3>You always decide</h3>
+          <p>Nothing is locked. Not now and Open are each one tap away, every time.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="var(--chip)"/><path d="M11 25 C16 19 19 30 24 24 S32 19 37 24" stroke="var(--leaf)" stroke-width="3"/></svg>
+          <h3>No streaks to break</h3>
+          <p>Each morning starts clear. A heavy day costs you nothing tomorrow.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="var(--chip)"/><path transform="translate(24 24) scale(.9)" d="M-14 2 C-10 -12 6 -14 10 -4 C14 6 0 14 -6 6 C-12 -2 -2 -12 8 -8 C16 -4 12 10 2 12 C-6 14 -14 8 -10 0" stroke="var(--knot)" stroke-width="3"/></svg>
+          <h3>No scolding</h3>
+          <p>A knot is a picture of how your day feels, not a score or a punishment.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="var(--chip)"/><circle cx="24" cy="24" r="9" stroke="var(--spark)" stroke-width="3"/><circle cx="24" cy="24" r="3.5" fill="var(--spark)"/></svg>
+          <h3>Calm from start to finish</h3>
+          <p>Soft colours, slow breaths, no alarms. Even time's up is a quiet screen, not a buzz.</p>
+        </li>
+      </ul>
     </div>
   </section>
 
-  <footer>
-    <a href="privacy/">Privacy policy</a>
-    <span>Contact: <a class="email" href="mailto:kevin.cvetezar@gmail.com">kevin.cvetezar@gmail.com</a></span>
-    <span class="who">Lunaria Studios. This page loads no scripts, trackers or cookies.</span>
-  </footer>
+  <section class="patterns" aria-labelledby="patterns-title">
+    <div class="wrap inner">
+      <div>
+        <h2 class="sec-title" id="patterns-title">See what pulls you in</h2>
+        <p class="sec-intro">Patterns shows the knots you tied and untied, how often you said not now, when the urge comes, and your inner weather across the week or month. Most of all, it shows why you reached for your phone.</p>
+        <ul class="reasons" aria-label="Reasons you can pick on the pause">
+          <li>Kill time</li><li>Avoid something</li><li>Escape stress</li><li>Reward myself</li><li>Learn something</li>
+        </ul>
+      </div>
+      <figure class="phone"><img src="assets/screens/patterns.webp" width="600" height="1334" loading="lazy" decoding="async"
+        alt="The Patterns screen: 16 knots tied, 11 untied, 12 not nows, a bar chart of knots by day, and what pulls you in, led by kill time at 41 percent."></figure>
+    </div>
+  </section>
+
+  <section class="private" aria-labelledby="private-title">
+    <div class="wrap">
+      <h2 class="sec-title" id="private-title">No account. Nothing leaves your phone.</h2>
+      <p class="sec-intro">Knotless has no internet permission, so it cannot send your data anywhere, and we never see it. No ads, no analytics, no tracking. Your knots live in a small database on your phone and are gone when you uninstall.</p>
+      <dl class="perms" aria-label="What Knotless asks Android for">
+        <div class="none"><dt>Internet</dt><dd>Not requested</dd></div>
+        <div><dt>Accessibility</dt><dd>To notice which app opens, so the pause can appear. It does not read your screen or what you type.</dd></div>
+        <div><dt>Usage access</dt><dd>Optional. Puts your most used apps first in the list.</dd></div>
+        <div><dt>Notifications</dt><dd>Only to tell you if Android stops the pause.</dd></div>
+        <div><dt>Start at boot</dt><dd>Keeps the pause working after a restart.</dd></div>
+      </dl>
+      <p><a href="privacy/">Read the privacy policy</a></p>
+    </div>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-title">
+    <div class="wrap inner">
+      <div>
+        <h2 class="sec-title" id="faq-title">Questions</h2>
+        <div class="list">
+          <details>
+            <summary>Is Knotless free?</summary>
+            <p>Yes. There is no account to make and there are no ads.</p>
+          </details>
+          <details>
+            <summary>Does it block apps?</summary>
+            <p>No. It is a pause, not a block. You can always open the app; doing so ties a knot, and you can untie it later.</p>
+          </details>
+          <details>
+            <summary>Does it read my screen?</summary>
+            <p>No. Knotless only notices which app came to the front, so it can show the pause before the apps you chose. It never sees what is on your screen, what you type, or anything inside other apps.</p>
+          </details>
+          <details>
+            <summary>Why does it need Accessibility?</summary>
+            <p>On Android, the Accessibility service is the reliable way for an app to notice which app just opened. Knotless uses it for that, to briefly mute media while a pause is on screen, and to take you home when you choose not now. It stays off until you turn it on, and you can turn it off at any time. Knotless is not an accessibility tool.</p>
+          </details>
+          <details>
+            <summary>Is there an iPhone version?</summary>
+            <p>No. Knotless is for Android only.</p>
+          </details>
+          <details>
+            <summary>How long does setup take?</summary>
+            <p>About two minutes. A short guided setup shows you exactly where to tap, then you pick the apps that get a pause.</p>
+          </details>
+        </div>
+      </div>
+      <div class="setup">
+        <figure class="phone"><img src="assets/screens/setup.webp" width="600" height="1334" loading="lazy" decoding="async"
+          alt="The setup screen: Let's set up the pause. Three short steps: notice when an app opens, your most-used apps first, keep it running."></figure>
+        <p><strong>Set up in two minutes</strong>Three short steps, and the app shows you where to tap.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="final" aria-labelledby="final-title">
+    <div class="wrap">
+      <svg class="head" viewBox="0 0 200 220" aria-hidden="true">
+        <path d="M72 214 C70 198 64 184 56 170 C46 154 30 130 30 104 C30 58 64 24 108 24 C148 24 170 48 173 82 C174 94 176 102 175 108 C180 116 189 122 191 127 C193 132 189 136 183 136 C181 138 182 141 184 144 C186 148 185 152 182 154 C180 156 179 158 179 161 C179 166 183 170 182 175 C181 180 175 182 167 182 C159 182 151 183 147 188 C143 193 144 203 148 214"
+          fill="var(--chip)" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M56 98 C72 84 88 112 104 98 S136 84 152 98" fill="none" stroke="var(--leaf)" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <h2 class="sec-title" id="final-title">Start tomorrow with a clear mind</h2>
+      <p class="sec-intro">Knotless is coming soon to Google Play, free for Android.</p>
+      <!-- At launch: https://play.google.com/store/apps/details?id=com.lunariastudios.knotless -->
+      <span class="store">
+        <svg viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11" fill="none" stroke="var(--btn-dot)" stroke-width="2.4"/><path d="M8 14 c2 -3 4 3 5 0 s3 -3 5 0" fill="none" stroke="var(--btn-dot)" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <span><small>Coming soon to</small><b>Google Play</b></span>
+      </span>
+    </div>
+  </section>
 </main>
+
+<footer>
+  <div class="wrap">
+    <nav aria-label="Footer">
+      <a href="privacy/">Privacy policy</a>
+      <span>Contact: <a class="email" href="mailto:kevin.cvetezar@gmail.com">kevin.cvetezar@gmail.com</a></span>
+    </nav>
+    <p>Knotless is made by <a href="https://kcvete.github.io/lunaria-landing/">Lunaria Studios</a>. It is a self-help tool for calmer phone habits, not a medical device.</p>
+    <p>This page loads no scripts, trackers or cookies, and nothing from outside this site.</p>
+  </div>
+</footer>
 </body>
 </html>

@@ -16,12 +16,16 @@ All links are relative, so the site works under the `/knotless/` subpath.
 - `privacy/index.html`: privacy policy (source: `docs/play-store/privacy-policy.html`
   in the app repo)
 - `assets/`: icon, favicon, feature graphic (Open Graph image), fonts
+- `assets/screens/`: app screens shown on the homepage, 600 px wide WebP made from
+  the raw Play captures in the app repo (`docs/play-store/screenshots/raw/`):
+  `cwebp -q 88 -m 6 -resize 600 0 in.png -o out.webp`
 - `.nojekyll`: serve files as they are, without Jekyll
 
 ## Placeholders
 
-- "Coming soon to Google Play" in `index.html`: swap for the Play link at launch
-  (the URL is in an HTML comment next to it).
+- "Coming soon to Google Play" in `index.html` (hero and final section): at launch,
+  turn each `<span class="store">` into `<a class="store" href="...">` and change
+  the label. The Play URL is in an HTML comment next to each.
 
 ## Preview locally
 
