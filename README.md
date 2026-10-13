@@ -2,13 +2,15 @@
 
 Static website for the Android app **Knotless: Untie Your Mind** by Lunaria Studios.
 
-- Homepage (developer website): https://kcvete.github.io/knotless/
-- Privacy policy (Play Console URL): https://kcvete.github.io/knotless/privacy/
+- Homepage (developer website): https://knotless.lunariastudios.dev/
+- Privacy policy (Play Console URL): https://knotless.lunariastudios.dev/privacy/
+
+The old `https://kcvete.github.io/knotless/` addresses redirect to these.
 
 Plain HTML and CSS: no build step, no scripts, no trackers, no cookies. The fonts
 (Bricolage Grotesque, Figtree; SIL OFL 1.1) are self-hosted in `assets/fonts/`,
 and the policy page inlines them, so neither page makes third-party requests.
-All links are relative, so the site works under the `/knotless/` subpath.
+All links are relative, so the site works at a domain root or under a subpath.
 
 ## Files
 
@@ -45,3 +47,6 @@ gh api -X POST repos/kcvete/knotless/pages \
 
 Pages is served from `main`, folder `/` (root). The first build takes a minute
 or two; check it with `gh api repos/kcvete/knotless/pages`.
+
+Custom domain: `knotless.lunariastudios.dev` (the `CNAME` file; keep it). DNS is at
+Dynadot: `knotless` is a `CNAME` to `kcvete.github.io`.
